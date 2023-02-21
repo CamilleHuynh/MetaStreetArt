@@ -1,3 +1,16 @@
+# MetaStreetArt
+
+## Introduction
+
+This project was made for a one-week workshop, including students from CNAM-ENJMIN, EESI Angoulême and EESI Poitiers.
+It uses a template made by ENJMIN students for an online game, using Smartfoxserver and Unity.
+
+See below for more informations on this template.
+
+_____________________________________________________________________
+
+
+
 # Smartfox Metavers (Template for Unity)
 
 ## Introduction
