@@ -320,7 +320,7 @@ public class GameSceneController : BaseSceneController
 	    param.PutFloat("x", position.x);
 	    param.PutFloat("y", position.y);
 	    param.PutFloat("z", position.z);
-	    param.PutFloat("rot", rotation.eulerAngles.y);
+	    param.PutFloat("rotY", rotation.eulerAngles.y);
 	    param.PutInt("mat", numMaterial);
 
 	    // Send request -> server will create MMOItem and add it to map
