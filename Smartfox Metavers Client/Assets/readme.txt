@@ -1,0 +1,2 @@
+The assets used to create the environment in this demo are part of the LowPoly Environment Pack by Vladislav Valentyukevich, available in the Unity Asset Store at this URL: https://assetstore.unity.com/packages/3d/environments/landscapes/lowpoly-environment-pack-99479
+The usage and redistribution of the assets has been authorized by the author.
