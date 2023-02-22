@@ -36,12 +36,16 @@ public class GameSceneController : BaseSceneController
 	private Dictionary<int, GameObject> items = new Dictionary<int, GameObject>();
 	private GameObject aoi;
 
+	private DecalApplicatorController decalController;
+
     //----------------------------------------------------------
     // Unity callback methods
     //----------------------------------------------------------
 
     private void Start()
 	{
+		decalController = FindObjectOfType<DecalApplicatorController>();
+
 		// Set a reference to the SmartFox client instance
 		sfs = gm.GetSfsClient();
 
@@ -320,7 +324,7 @@ public class GameSceneController : BaseSceneController
 	    param.PutFloat("x", position.x);
 	    param.PutFloat("y", position.y);
 	    param.PutFloat("z", position.z);
-	    param.PutFloat("rotY", rotation.eulerAngles.y);
+	    param.PutFloat("rot", rotation.eulerAngles.y);
 	    param.PutInt("mat", numMaterial);
 
 	    // Send request -> server will create MMOItem and add it to map
@@ -348,6 +352,30 @@ public class GameSceneController : BaseSceneController
 	    }
 	    items.Add(id, cube);
     }
+
+	#endregion
+
+	#region Decal Spawner methods
+
+	public void SpawnStickerDecalRequest(ISFSObject param)
+	{
+		Debug.Log("Send sticker decal request");
+		sfs.Send(new ExtensionRequest("spawn_stickerDecal", param, sfs.LastJoinedRoom));
+	}
+
+	private void SpawnStickerDecal(IMMOItem item)
+	{
+		Debug.Log("Spawn sticker decal in world");
+
+		decalController.SpawnStickerDecalFromServer(item);
+	}
+
+	private void SpawnStickerDecalEvent(SFSObject param)
+	{
+		Debug.Log("Spawn sticker decal from event");
+
+		decalController.SpawnStickerDecalFromEvent(param);
+	}
 
 	#endregion
 
@@ -392,8 +420,23 @@ public class GameSceneController : BaseSceneController
 
 		foreach (IMMOItem item in addedItems)
 		{
-			SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
-				Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
+			// SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
+				// Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
+
+			Debug.Log("Spawn IMMOItem in OnProximityListUpdate");
+
+			switch (item.GetVariable("type").GetStringValue())
+			{
+				case "cube":
+					SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
+						Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
+					break;
+
+				case "sticker_decal":
+					SpawnStickerDecal(item);
+					break;
+			}
+
 		}
 
 		foreach (IMMOItem item in removedItems)
@@ -465,10 +508,16 @@ public class GameSceneController : BaseSceneController
 			// "Millis between proximity updates" constant and so is not time consistent.
 			// If you don't understand you can test by commenting this case.
 			case "spawn_cube_from_server":
+				Debug.Log("Spawn cube from event");
 				SpawnCube(args.GetInt("id"),
 					new Vector3(args.GetFloat("x"), args.GetFloat("y"), args.GetFloat("z")),
 					Quaternion.Euler(0, args.GetFloat("rot"), 0),
 					args.GetInt("mat"));
+				break;
+
+			case "spawn_stickerDecal_from_server":
+				Debug.Log("Spawn sticker decal from event");
+				SpawnStickerDecalEvent(args);
 				break;
 		}
 	}
