@@ -3309,14 +3309,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e475d09e2389745b0a226e8feeca810d, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -25078,6 +25078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 1478668710}
+  playerPrefab: {fileID: 8127538224119021884, guid: ffcd6319830b44f4dac637c900eeec46, type: 3}
   playerModels:
   - {fileID: 100002, guid: c356d07ea28e14000a234864a77ef1fa, type: 3}
   - {fileID: 100002, guid: 1c8f4da59af974aa4a2b23e9fe40956f, type: 3}

@@ -1,68 +1,107 @@
 using UnityEngine;
 
+[RequireComponent(typeof(CharacterController))]
+
 public class PlayerController : MonoBehaviour
 {
-	const float FORWARD_SPEED = 10;
-	const float ROTATION_SPEED = 100;
+    public float walkingSpeed = 7.5f;
+    public float runningSpeed = 11.5f;
+    public float jumpSpeed = 8.0f;
+    public float gravity = 20.0f;
+    public Camera playerCamera;
+    public float lookSpeed = 2.0f;
+    public float lookXLimit = 45.0f;
 
-	private Vector3 lowerLimit;
-	private Vector3 higherLimit;
+    CharacterController characterController;
+    Vector3 moveDirection = Vector3.zero;
+    float rotationX = 0;
 
-	[SerializeField] private LayerMask playerLayer;
-	[SerializeField] private float interactionDistance = 50.0f;
+    [HideInInspector]
+    public bool canMove = true;
 
-	// Dirty flag for checking if movement was made or not
-	public bool MovementDirty {get; set;}
+    private Vector3 lowerLimit;
+    private Vector3 higherLimit;
 
-	void Start()
-	{
-		MovementDirty = false;
-	}
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private float interactionDistance = 50.0f;
 
-	void Update ()
-	{
-		// Forward/backward makes player model move
-		float translation = Input.GetAxis("Vertical");
+    // Dirty flag for checking if movement was made or not
+    public bool MovementDirty
+    {
+	    get => moveDirection != Vector3.zero;
+    }
 
-		if (translation != 0)
-		{
-			// Translate object
-			this.transform.Translate(0, 0, translation * Time.deltaTime * FORWARD_SPEED);
+    void Start()
+    {
+        characterController = GetComponent<CharacterController>();
 
-			// Check movement limits
-			Vector3 pos = this.transform.position;
+        // Lock cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
-			if (pos.x < lowerLimit.x)
-				this.transform.position = new Vector3(lowerLimit.x, pos.y, pos.z);
-			if (pos.x > higherLimit.x)
-				this.transform.position = new Vector3(higherLimit.x, pos.y, pos.z);
+    void Update()
+    {
+        // We are grounded, so recalculate move direction based on axes
+        Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 right = transform.TransformDirection(Vector3.right);
+        
+        // Press Left Shift to run
+        bool isRunning = Input.GetKey(KeyCode.LeftShift);
+        float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
+        float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
+        float movementDirectionY = moveDirection.y;
+        moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
-			if (pos.z < lowerLimit.z)
-				this.transform.position = new Vector3(pos.x, pos.y, lowerLimit.z);
-			if (pos.z > higherLimit.z)
-				this.transform.position = new Vector3(pos.x, pos.y, higherLimit.z);
+        if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
+        {
+            moveDirection.y = jumpSpeed;
+        }
+        else
+        {
+            moveDirection.y = movementDirectionY;
+        }
 
-			MovementDirty = true;
-		}
+        // Apply gravity. Gravity is multiplied by deltaTime twice (once here, and once below
+        // when the moveDirection is multiplied by deltaTime). This is because gravity should be applied
+        // as an acceleration (ms^-2)
+        if (!characterController.isGrounded)
+        {
+            moveDirection.y -= gravity * Time.deltaTime;
+        }
 
-		// Left/right makes player model rotate around own axis
-		float rotation = Input.GetAxis("Horizontal");
+        // Move the controller
+        characterController.Move(moveDirection * Time.deltaTime);
 
-		if (rotation != 0)
-		{
-			this.transform.Rotate(Vector3.up, rotation * Time.deltaTime * ROTATION_SPEED);
+        // Player and Camera rotation
+        if (canMove)
+        {
+            rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+            rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
+            playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
+            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
+        }
+        
+        // Check movement limits
+        Vector3 pos = this.transform.position;
 
-			MovementDirty = true;
-		}
-	}
+        if (pos.x < lowerLimit.x)
+	        this.transform.position = new Vector3(lowerLimit.x, pos.y, pos.z);
+        if (pos.x > higherLimit.x)
+	        this.transform.position = new Vector3(higherLimit.x, pos.y, pos.z);
 
+        if (pos.z < lowerLimit.z)
+	        this.transform.position = new Vector3(pos.x, pos.y, lowerLimit.z);
+        if (pos.z > higherLimit.z)
+	        this.transform.position = new Vector3(pos.x, pos.y, higherLimit.z);
+    }
+	
 	void FixedUpdate ()
 	{
 		// Interaction
-		
 		RaycastHit hit;
         // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, interactionDistance, playerLayer))
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, interactionDistance, ~playerLayer))
         {
             Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
             Debug.Log("Did Hit");

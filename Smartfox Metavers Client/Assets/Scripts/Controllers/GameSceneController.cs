@@ -19,6 +19,7 @@ public class GameSceneController : BaseSceneController
 
 	[Header("Linked Elements")]
 	[SerializeField] private SettingsPanel settingsPanel;
+	[SerializeField] private GameObject playerPrefab;
 	[SerializeField] private GameObject[] playerModels;
 	[SerializeField] private Material[] playerMaterials;
 	[SerializeField] private Collider terrainCollider;
@@ -94,7 +95,7 @@ public class GameSceneController : BaseSceneController
 			 * Check the server-side Extension code.
 			 */
 
-            localPlayerController.MovementDirty = false;
+            //localPlayerController.MovementDirty = false;
 		}
 
 		// Make AoI game object follow player
@@ -251,16 +252,17 @@ public class GameSceneController : BaseSceneController
 			pos.y = GetTerrainHeight(pos);
 		}
 
+		
 		// Spawn local player model
-		localPlayer = Instantiate(playerModels[numModel], pos, rot);
+		localPlayer = Instantiate(playerPrefab, pos, rot);
 
         // Assign starting material
         localPlayer.GetComponentInChildren<Renderer>().material = playerMaterials[numMaterial];
 
 		// Since this is the local player, lets add a controller and set the camera
-		localPlayerController = localPlayer.AddComponent<PlayerController>();
+		localPlayerController = localPlayer.GetComponent<PlayerController>();
+		//Camera.main.transform.parent = localPlayer.transform;
 		localPlayer.GetComponentInChildren<Text>().text = sfs.MySelf.Name;
-		Camera.main.transform.parent = localPlayer.transform;
 
 		// Set movement limits based on map limits set for the MMORoom
 		Vec3D lowerMapLimits = ((MMORoom)sfs.LastJoinedRoom).LowerMapLimit;
