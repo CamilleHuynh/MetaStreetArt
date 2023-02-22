@@ -19,6 +19,7 @@ public class GameSceneController : BaseSceneController
 
 	[Header("Linked Elements")]
 	[SerializeField] private SettingsPanel settingsPanel;
+	[SerializeField] private GameObject playerPrefab;
 	[SerializeField] private GameObject[] playerModels;
 	[SerializeField] private Material[] playerMaterials;
 	[SerializeField] private Collider terrainCollider;
@@ -36,12 +37,16 @@ public class GameSceneController : BaseSceneController
 	private Dictionary<int, GameObject> items = new Dictionary<int, GameObject>();
 	private GameObject aoi;
 
+	private DecalApplicatorController decalController;
+
     //----------------------------------------------------------
     // Unity callback methods
     //----------------------------------------------------------
 
     private void Start()
 	{
+		decalController = FindObjectOfType<DecalApplicatorController>();
+
 		// Set a reference to the SmartFox client instance
 		sfs = gm.GetSfsClient();
 
@@ -90,7 +95,7 @@ public class GameSceneController : BaseSceneController
 			 * Check the server-side Extension code.
 			 */
 
-            localPlayerController.MovementDirty = false;
+            //localPlayerController.MovementDirty = false;
 		}
 
 		// Make AoI game object follow player
@@ -235,8 +240,6 @@ public class GameSceneController : BaseSceneController
 			pos = localPlayer.transform.position;
 			rot = localPlayer.transform.rotation;
 
-			Camera.main.transform.parent = null;
-
 			Destroy(localPlayer);
 		}
 		else
@@ -247,16 +250,17 @@ public class GameSceneController : BaseSceneController
 			pos.y = GetTerrainHeight(pos);
 		}
 
+		
 		// Spawn local player model
-		localPlayer = Instantiate(playerModels[numModel], pos, rot);
+		localPlayer = Instantiate(playerPrefab, pos, rot);
 
         // Assign starting material
         localPlayer.GetComponentInChildren<Renderer>().material = playerMaterials[numMaterial];
 
 		// Since this is the local player, lets add a controller and set the camera
-		localPlayerController = localPlayer.AddComponent<PlayerController>();
-		localPlayer.GetComponentInChildren<Text>().text = sfs.MySelf.Name;
+		localPlayerController = localPlayer.GetComponent<PlayerController>();
 		Camera.main.transform.parent = localPlayer.transform;
+		localPlayer.GetComponentInChildren<Text>().text = sfs.MySelf.Name;
 
 		// Set movement limits based on map limits set for the MMORoom
 		Vec3D lowerMapLimits = ((MMORoom)sfs.LastJoinedRoom).LowerMapLimit;
@@ -351,6 +355,30 @@ public class GameSceneController : BaseSceneController
 
 	#endregion
 
+	#region Decal Spawner methods
+
+	public void SpawnStickerDecalRequest(ISFSObject param)
+	{
+		Debug.Log("Send sticker decal request");
+		sfs.Send(new ExtensionRequest("spawn_stickerDecal", param, sfs.LastJoinedRoom));
+	}
+
+	private void SpawnStickerDecal(IMMOItem item)
+	{
+		Debug.Log("Spawn sticker decal in world");
+
+		decalController.SpawnStickerDecalFromServer(item);
+	}
+
+	private void SpawnStickerDecalEvent(SFSObject param)
+	{
+		Debug.Log("Spawn sticker decal from event");
+
+		decalController.SpawnStickerDecalFromEvent(param);
+	}
+
+	#endregion
+
 	//----------------------------------------------------------
 	// SmartFoxServer event listeners
 	//----------------------------------------------------------
@@ -392,8 +420,23 @@ public class GameSceneController : BaseSceneController
 
 		foreach (IMMOItem item in addedItems)
 		{
-			SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
-				Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
+			// SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
+				// Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
+
+			Debug.Log("Spawn IMMOItem in OnProximityListUpdate");
+
+			switch (item.GetVariable("type").GetStringValue())
+			{
+				case "cube":
+					SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
+						Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
+					break;
+
+				case "sticker_decal":
+					SpawnStickerDecal(item);
+					break;
+			}
+
 		}
 
 		foreach (IMMOItem item in removedItems)
@@ -465,10 +508,16 @@ public class GameSceneController : BaseSceneController
 			// "Millis between proximity updates" constant and so is not time consistent.
 			// If you don't understand you can test by commenting this case.
 			case "spawn_cube_from_server":
+				Debug.Log("Spawn cube from event");
 				SpawnCube(args.GetInt("id"),
 					new Vector3(args.GetFloat("x"), args.GetFloat("y"), args.GetFloat("z")),
 					Quaternion.Euler(0, args.GetFloat("rot"), 0),
 					args.GetInt("mat"));
+				break;
+
+			case "spawn_stickerDecal_from_server":
+				Debug.Log("Spawn sticker decal from event");
+				SpawnStickerDecalEvent(args);
 				break;
 		}
 	}

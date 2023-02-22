@@ -66,6 +66,7 @@ public class CubeSpawnerRoomExtension extends SFSExtension
         // Add event listener
         addEventHandler(SFSEventType.USER_VARIABLES_UPDATE, new UserVariablesUpdateHandler());
         addRequestHandler("spawn_cube", new SpawnCubeRequestHandler());
+        addRequestHandler("spawn_stickerDecal", new SpawnStickerDecalRequestHandler());
     }
 
     /**
@@ -84,6 +85,9 @@ public class CubeSpawnerRoomExtension extends SFSExtension
 
             // Creating the MMOItem
             List<IMMOItemVariable> variables = new LinkedList<>();
+
+            variables.add(new MMOItemVariable ("type", "cube"));
+
             variables.add(new MMOItemVariable("rot", params.getFloat("rot")));
             variables.add(new MMOItemVariable("mat", params.getInt("mat")));
             MMOItem cube = new MMOItem(variables);
@@ -98,6 +102,7 @@ public class CubeSpawnerRoomExtension extends SFSExtension
             send("spawn_cube_from_server", params, usersNearCube);
         }
     }
+
 
 
     /**
@@ -138,6 +143,42 @@ public class CubeSpawnerRoomExtension extends SFSExtension
                 // Set position in proximity system
                 m_mmoAPi.setUserPosition(user, pos, getParentRoom());
             }
+        }
+    }
+
+    private class SpawnStickerDecalRequestHandler extends BaseClientRequestHandler
+    {
+        @Override
+        public void handleClientRequest(User user, ISFSObject params)
+        {
+            System.out.print("Sent spawn_cube_from_server event");
+
+            // Creating the MMOItem
+            List<IMMOItemVariable> variables = new LinkedList<>();
+
+            variables.add(new MMOItemVariable("type", "sticker_decal")); // Specify type of decal
+
+            variables.add(new MMOItemVariable("stickerDecalID", params.getInt("stickerDecalID")));
+
+            variables.add(new MMOItemVariable("rotX", params.getFloat("rotX")));
+            variables.add(new MMOItemVariable("rotY", params.getFloat("rotY")));
+            variables.add(new MMOItemVariable("rotZ", params.getFloat("rotZ")));
+
+            // variables.add(new MMOItemVariable("sizeX", params.getFloat("sizeX")));
+            // variables.add(new MMOItemVariable("sizeY", params.getFloat("sizeY")));
+            // variables.add(new MMOItemVariable("sizeZ", params.getFloat("sizeZ")));
+
+            variables.add(new MMOItemVariable("stickerID", params.getInt("stickerID")));
+            MMOItem stickerDecal = new MMOItem(variables);
+
+            // Adding the MMOItem in the map -> this is enough to make a user see the item in his proximity list
+            m_mmoAPi.setMMOItemPosition(stickerDecal, new Vec3D(params.getFloat("x"), params.getFloat("y"), params.getFloat("z")), getParentRoom());
+
+            // Sending the item instantly to the users that can see it, to avoid that the client has to wait for the next proximityListUpdate because this can cause some asynchronous behaviour.
+            params.putInt("id", stickerDecal.getId());
+            List<User> usersNearCube = m_room.getProximityList(user);
+            usersNearCube.add(user);
+            send("spawn_stickerDecal_from_server", params, usersNearCube);
         }
     }
 }
