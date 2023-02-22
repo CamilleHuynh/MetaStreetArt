@@ -7,6 +7,16 @@ It uses a template made by ENJMIN students for an online game, using Smartfoxser
 
 See below for more informations on this template.
 
+Setup instructions :
+- Open the src file with IntelliJ, add sfs2x.jar and sfs2x-core.jar to IntelliJ libs (Project Structure > Module > Dependency), change Project > Language Level to 11
+- Create the .jar following the instructions in the [smartfoxserver documentation](http://docs2x.smartfoxserver.com/)
+- Add the .jar to SmartFoxServer > SFS2X > extensions > CubeSpawner (the name of the file must be the same as the Room Extension ID in Server Connection Data)
+- Launch the server
+- Create a Metaverse Zone (the zone must have the same name as the Zone Name in Server Connection Data)
+- Add cube_spawner to the Public Room Group in the Zone Configurator
+- Remove default from Default Room Group
+- Set the max number of variables to 20 (or more)
+
 _____________________________________________________________________
 
 
