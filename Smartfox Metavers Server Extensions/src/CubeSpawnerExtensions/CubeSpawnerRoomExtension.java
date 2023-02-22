@@ -163,9 +163,9 @@ public class CubeSpawnerRoomExtension extends SFSExtension
             variables.add(new MMOItemVariable("rotY", params.getFloat("rotY")));
             variables.add(new MMOItemVariable("rotZ", params.getFloat("rotZ")));
 
-            // variables.add(new MMOItemVariable("sizeX", params.getFloat("sizeX")));
-            // variables.add(new MMOItemVariable("sizeY", params.getFloat("sizeY")));
-            // variables.add(new MMOItemVariable("sizeZ", params.getFloat("sizeZ")));
+            variables.add(new MMOItemVariable("sizeX", params.getFloat("sizeX")));
+            variables.add(new MMOItemVariable("sizeY", params.getFloat("sizeY")));
+            variables.add(new MMOItemVariable("sizeZ", params.getFloat("sizeZ")));
 
             variables.add(new MMOItemVariable("stickerID", params.getInt("stickerID")));
             MMOItem stickerDecal = new MMOItem(variables);

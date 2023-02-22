@@ -365,15 +365,11 @@ public class GameSceneController : BaseSceneController
 
 	private void SpawnStickerDecal(IMMOItem item)
 	{
-		Debug.Log("Spawn sticker decal in world");
-
 		decalController.SpawnStickerDecalFromServer(item);
 	}
 
 	private void SpawnStickerDecalEvent(SFSObject param)
 	{
-		Debug.Log("Spawn sticker decal from event");
-
 		decalController.SpawnStickerDecalFromEvent(param);
 	}
 
@@ -420,11 +416,6 @@ public class GameSceneController : BaseSceneController
 
 		foreach (IMMOItem item in addedItems)
 		{
-			// SpawnCube(item.Id, new Vector3(item.AOIEntryPoint.FloatX, item.AOIEntryPoint.FloatY, item.AOIEntryPoint.FloatZ),
-				// Quaternion.Euler(0, (float)item.GetVariable("rot").GetDoubleValue(), 0), item.GetVariable("mat").GetIntValue());
-
-			Debug.Log("Spawn IMMOItem in OnProximityListUpdate");
-
 			switch (item.GetVariable("type").GetStringValue())
 			{
 				case "cube":
@@ -496,8 +487,6 @@ public class GameSceneController : BaseSceneController
 	 */
 	private void OnExtensionResponse(BaseEvent evt)
 	{
-		Debug.Log("OnExtensionResponse");
-
 		var cmd = (string) evt.Params["cmd"];
 		var args = (SFSObject) evt.Params["params"];
 
@@ -508,7 +497,6 @@ public class GameSceneController : BaseSceneController
 			// "Millis between proximity updates" constant and so is not time consistent.
 			// If you don't understand you can test by commenting this case.
 			case "spawn_cube_from_server":
-				Debug.Log("Spawn cube from event");
 				SpawnCube(args.GetInt("id"),
 					new Vector3(args.GetFloat("x"), args.GetFloat("y"), args.GetFloat("z")),
 					Quaternion.Euler(0, args.GetFloat("rot"), 0),
@@ -516,7 +504,6 @@ public class GameSceneController : BaseSceneController
 				break;
 
 			case "spawn_stickerDecal_from_server":
-				Debug.Log("Spawn sticker decal from event");
 				SpawnStickerDecalEvent(args);
 				break;
 		}

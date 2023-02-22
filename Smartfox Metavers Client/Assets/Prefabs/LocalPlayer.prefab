@@ -289,7 +289,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   decalReach: 10
-  previewDecal: {fileID: 4798748365701764476, guid: 52f03840651fbba4fba62941f9a25b74, type: 3}
+  increaseSizeRate: 50
+  sizeClamp: {x: 0.1, y: 7}
+  rotateDegreeRate: 80
+  previewDecal: {fileID: 3253517662798176505}
   stickersSO: {fileID: 11400000, guid: 9a40de041dd00f14ebb9baf3992be407, type: 2}
 --- !u!1 &8266009559839300097
 GameObject:
@@ -651,6 +654,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 52f03840651fbba4fba62941f9a25b74, type: 3}
+--- !u!114 &3253517662798176505 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4798748365701764476, guid: 52f03840651fbba4fba62941f9a25b74, type: 3}
+  m_PrefabInstance: {fileID: 8051949209700054405}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f19d9143a39eb3b46bc4563e9889cfbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3253517662798176506 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4798748365701764479, guid: 52f03840651fbba4fba62941f9a25b74, type: 3}
