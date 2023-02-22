@@ -42,6 +42,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        
+        // UI Pause
+        if (Input.GetButtonDown("Pause"))
+        {
+            Debug.Log("Pause");
+            canMove = !canMove;
+            Cursor.lockState = canMove ? CursorLockMode.Locked : CursorLockMode.None;
+            Cursor.visible = canMove ? false : true;
+        }
+        
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -95,25 +105,30 @@ public class PlayerController : MonoBehaviour
         if (pos.z > higherLimit.z)
 	        this.transform.position = new Vector3(pos.x, pos.y, higherLimit.z);
     }
-	
-	void FixedUpdate ()
-	{
-		// Interaction
-		RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, interactionDistance, ~playerLayer))
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
-            Debug.Log("Did Hit");
-        }
-        else
-        {
-            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-            Debug.Log("Did not Hit");
-        }
-	}
 
-	public void SetLimits(float minX, float minZ, float maxX, float maxZ)
+    void FixedUpdate()
+    {
+        // Interaction
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
+                    interactionDistance, ~playerLayer))
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance,
+                    Color.yellow);
+                Debug.Log("Did Hit");
+            }
+            else
+            {
+                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
+                Debug.Log("Did not Hit");
+            }
+        }
+    }
+
+    public void SetLimits(float minX, float minZ, float maxX, float maxZ)
     {
 		lowerLimit = new Vector3(minX, 0, minZ);
 		higherLimit = new Vector3(maxX, 0, maxZ);

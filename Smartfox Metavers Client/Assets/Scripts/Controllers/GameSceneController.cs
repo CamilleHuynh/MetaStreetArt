@@ -240,8 +240,6 @@ public class GameSceneController : BaseSceneController
 			pos = localPlayer.transform.position;
 			rot = localPlayer.transform.rotation;
 
-			Camera.main.transform.parent = null;
-
 			Destroy(localPlayer);
 		}
 		else
@@ -261,7 +259,7 @@ public class GameSceneController : BaseSceneController
 
 		// Since this is the local player, lets add a controller and set the camera
 		localPlayerController = localPlayer.GetComponent<PlayerController>();
-		//Camera.main.transform.parent = localPlayer.transform;
+		Camera.main.transform.parent = localPlayer.transform;
 		localPlayer.GetComponentInChildren<Text>().text = sfs.MySelf.Name;
 
 		// Set movement limits based on map limits set for the MMORoom
