@@ -44,7 +44,7 @@ public class DecalApplicatorController : MonoBehaviour
                 player = FindObjectOfType<PlayerController>();
             }
 
-            SendStickerDecalRequest(player.transform.position, Quaternion.Euler(90, 0, 0), 0, 1);
+            SendStickerDecalRequest(player.transform.position, Quaternion.Euler(90, 0, 0), 0);
         }
 
     }
@@ -52,7 +52,7 @@ public class DecalApplicatorController : MonoBehaviour
     // Decode parameters from IMMOItem and call spawning function
     public void SpawnStickerDecalFromServer(IMMOItem item)
     {
-        int id = item.GetVariable("stickerDecalID").GetIntValue();
+        // int id = item.GetVariable("stickerDecalID").GetIntValue();
 
         Vector3 pos = DecodePositionVector(item);
 
@@ -64,18 +64,27 @@ public class DecalApplicatorController : MonoBehaviour
 
         int stickerID = item.GetVariable("stickerID").GetIntValue();
 
-        SpawnStickerDecal(id, pos, rot, size, stickerID);
+        SpawnStickerDecal(pos, rot, size, stickerID);
     }
 
     public void SpawnStickerDecalFromEvent(SFSObject param)
     {
+        Vector3 pos = new Vector3(param.GetFloat("x"), param.GetFloat("y"), param.GetFloat("z"));
 
+        Vector3 eulerAngles = new Vector3(param.GetFloat("rotZ"), param.GetFloat("rotY"), param.GetFloat("rotZ"));
+        Quaternion rot = Quaternion.Euler(eulerAngles);
+
+        Vector3 size = new Vector3(5, 5, 5);
+
+        int stickerID = param.GetInt("stickerID");
+
+        SpawnStickerDecal(pos, rot, size, stickerID);
     }
 
     /**
      * Send spawn sticker decal request to server
      */
-    private void SendStickerDecalRequest(Vector3 position, Quaternion rotation, int stickerID, int stickerDecalID)
+    public void SendStickerDecalRequest(Vector3 position, Quaternion rotation, int stickerID)
     {
         Debug.Log("Set params for sticker decal spawn request");
 
@@ -96,8 +105,6 @@ public class DecalApplicatorController : MonoBehaviour
         // Add parameters for size when we know how to manage it
 
         // Add param.PutFloat for lifetime/date/something to make them disappear
-
-        param.PutInt("stickerDecalID", stickerDecalID);
 	    param.PutInt("stickerID", stickerID);
 
         gs.SpawnStickerDecalRequest(param);
@@ -107,7 +114,7 @@ public class DecalApplicatorController : MonoBehaviour
 	    // sfs.Send(new ExtensionRequest("spawn_stickerDecal", param, sfs.LastJoinedRoom));
     }
 
-    private void SpawnStickerDecal(int id, Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
+    private void SpawnStickerDecal(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
     {
         Debug.Log("Spawn sticker decal in world");
 
@@ -115,6 +122,8 @@ public class DecalApplicatorController : MonoBehaviour
         // decal.size = size;
         decal.size = new Vector3(5, 5, 5);
         decal.material = stickersSO.stickerList[stickerID].mat;
+
+        decal.enabled = true;
     }
 
     private void InitializeStickerDecalList()

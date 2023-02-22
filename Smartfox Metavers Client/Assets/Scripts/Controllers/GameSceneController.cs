@@ -250,7 +250,7 @@ public class GameSceneController : BaseSceneController
 			pos.y = GetTerrainHeight(pos);
 		}
 
-		
+
 		// Spawn local player model
 		localPlayer = Instantiate(playerPrefab, pos, rot);
 
