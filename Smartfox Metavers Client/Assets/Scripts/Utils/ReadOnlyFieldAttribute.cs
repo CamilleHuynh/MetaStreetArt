@@ -1,5 +1,5 @@
-namespace m21cerutti.BUS.Runtime {
-	using UnityEngine;
+using UnityEngine;
 
-	public class ReadOnlyFieldAttribute : PropertyAttribute {}
+public class ReadOnlyFieldAttribute : PropertyAttribute
+{
 }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,17 +8,16 @@ public class StickerMenu : MonoBehaviour
     [SerializeField] private GameObject PrefabUISticker;
     [SerializeField] private Stickers soStickers;
 
-    
-    void Start()
+
+    private void Start()
     {
         Panel.gameObject.SetActive(false);
-
         foreach (var sticker in soStickers.stickerList)
         {
             var ui = Instantiate(PrefabUISticker, Content.transform).transform.GetChild(0);
-            ui.GetComponent<UnityEngine.UI.Image>().overrideSprite = 
-                Sprite.Create((Texture2D)sticker.Image, new Rect(0, 0, sticker.Image.width, sticker.Image.height), 
-                new Vector2(0.5f, 0.5f));
+            ui.GetComponent<Image>().overrideSprite =
+                Sprite.Create((Texture2D)sticker.Image, new Rect(0, 0, sticker.Image.width, sticker.Image.height),
+                    new Vector2(0.5f, 0.5f));
             ui.GetComponent<Button>().onClick.AddListener(() => { SelectSticker(sticker.id); });
         }
     }
@@ -27,14 +25,19 @@ public class StickerMenu : MonoBehaviour
     private void Update()
     {
         if (Input.GetMouseButtonDown(1)) // RightClick
-        {
-            Panel.gameObject.SetActive(!Panel.gameObject.activeSelf);
-        }
+            SetMenuActive(!Panel.gameObject.activeSelf);
     }
 
-    void SelectSticker(int id)
+    private void SetMenuActive(bool active)
+    {
+        Panel.gameObject.SetActive(!Panel.gameObject.activeSelf);
+        ((GameSceneController)GameSceneController.instance).SetMenuActive(Panel.gameObject.activeSelf);
+    }
+
+    private void SelectSticker(int id)
     {
         Debug.Log($"Select {id}");
-        Panel.gameObject.SetActive(false);
+        ((GameSceneController)GameSceneController.instance).localDecalController.SetStickerID(id);
+        SetMenuActive(!Panel.gameObject.activeSelf);
     }
 }
