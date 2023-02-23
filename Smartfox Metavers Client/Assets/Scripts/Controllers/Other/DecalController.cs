@@ -11,6 +11,10 @@ public class DecalController : MonoBehaviour
 
     [SerializeField] private DecalProjector previewDecal;
     [SerializeField] private Stickers stickersSO;
+
+    [SerializeField] private AudioClip tagSound;
+    [SerializeField] private AudioSource oneshotSource;
+
     private float currentRotation;
     private float currentSize;
     private DecalApplicatorController decalApplicatorController;
@@ -107,6 +111,7 @@ public class DecalController : MonoBehaviour
             if (Input.GetButtonDown("Fire1") && !((GameSceneController)GameSceneController.instance).IsInMenu)
             {
                 Debug.Log("DecalController : Set decal, size: " + previewDecal.size);
+                oneshotSource.PlayOneShot(tagSound);
                 decalApplicatorController.SendStickerDecalRequest(previewDecal.transform.position,
                     previewDecal.transform.rotation, previewDecal.size, stickerID);
             }

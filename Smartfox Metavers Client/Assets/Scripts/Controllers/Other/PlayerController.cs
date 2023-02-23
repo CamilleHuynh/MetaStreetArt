@@ -13,12 +13,16 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector] public bool canMove = true;
 
+    [SerializeField] private AudioSource walkSource;
+
+
     private CharacterController characterController;
     private Vector3 higherLimit;
 
     private Vector3 lowerLimit;
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX;
+
 
     // Dirty flag for checking if movement was made or not
     public bool MovementDirty => moveDirection != Vector3.zero;
@@ -58,6 +62,17 @@ public class PlayerController : MonoBehaviour
 
         // Move the controller
         characterController.Move(moveDirection * Time.deltaTime);
+
+        // Sound walk
+        if (characterController.isGrounded && moveDirection.x != 0 && moveDirection.z != 0)
+        {
+            if (!walkSource.isPlaying)
+                walkSource.Play();
+        }
+        else
+        {
+            walkSource.Stop();
+        }
 
         // Player and Camera rotation
         if (canMove)
