@@ -252,12 +252,8 @@ MonoBehaviour:
   gravity: 20
   playerCamera: {fileID: 4587495891623458631}
   lookSpeed: 2
-  lookXLimit: 45
+  lookXLimit: 60
   canMove: 1
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  interactionDistance: 50
 --- !u!143 &3465415032805364209
 CharacterController:
   m_ObjectHideFlags: 0
@@ -292,6 +288,9 @@ MonoBehaviour:
   increaseSizeRate: 50
   sizeClamp: {x: 0.1, y: 7}
   rotateDegreeRate: 80
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
   previewDecal: {fileID: 3253517662798176505}
   stickersSO: {fileID: 11400000, guid: 9a40de041dd00f14ebb9baf3992be407, type: 2}
 --- !u!1 &8266009559839300097

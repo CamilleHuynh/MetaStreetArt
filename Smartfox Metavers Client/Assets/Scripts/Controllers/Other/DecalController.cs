@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
 
@@ -7,29 +5,28 @@ public class DecalController : MonoBehaviour
 {
     [SerializeField] private float decalReach = 10f;
     [SerializeField] private float increaseSizeRate = 2f;
-    [SerializeField] private Vector2 sizeClamp = new Vector2(0.1f, 7f);
+    [SerializeField] private Vector2 sizeClamp = new(0.1f, 7f);
     [SerializeField] private float rotateDegreeRate = 5f;
-    private Camera mainCamera;
-    private LayerMask playerLayer;
-
-    private PlayerController playerController;
-    private DecalApplicatorController decalApplicatorController;
-
-    private int stickerID = 0;
-    private float currentRotation;
-    private float currentSize;
+    [SerializeField] private LayerMask playerLayer;
 
     [SerializeField] private DecalProjector previewDecal;
     [SerializeField] private Stickers stickersSO;
+    private float currentRotation;
+    private float currentSize;
+    private DecalApplicatorController decalApplicatorController;
+    private Camera mainCamera;
+
+    private PlayerController playerController;
+
+    private int stickerID;
 
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main;
 
         playerController = GetComponent<PlayerController>();
-        playerLayer = playerController.playerLayer;
 
         decalApplicatorController = FindObjectOfType<DecalApplicatorController>();
 
@@ -83,11 +80,11 @@ public class DecalController : MonoBehaviour
 
     private void ManageDecalChange()
     {
-        float sizeDelta = Input.GetAxis("Mouse ScrollWheel");
+        var sizeDelta = Input.GetAxis("Mouse ScrollWheel");
         currentSize += increaseSizeRate * sizeDelta * Time.deltaTime;
         UpdatePreviewDecalSize();
 
-        float rotationDelta = Input.GetAxis("Fire2");
+        var rotationDelta = Input.GetAxis("Rotate");
         currentRotation += rotateDegreeRate * rotationDelta * Time.deltaTime;
     }
 
@@ -95,8 +92,8 @@ public class DecalController : MonoBehaviour
     {
         RaycastHit hit;
 
-        Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
-        bool hasHit = Physics.Raycast(ray, out hit, decalReach, ~playerLayer);
+        var ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
+        var hasHit = Physics.Raycast(ray, out hit, decalReach, ~playerLayer);
 
         EnablePreviewDecal(hasHit);
 
@@ -107,17 +104,15 @@ public class DecalController : MonoBehaviour
 
             UpdatePreviewDecalTransform();
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && !((GameSceneController)GameSceneController.instance).IsInMenu)
             {
                 Debug.Log("DecalController : Set decal, size: " + previewDecal.size);
-                decalApplicatorController.SendStickerDecalRequest(previewDecal.transform.position, previewDecal.transform.rotation, previewDecal.size, stickerID);
+                decalApplicatorController.SendStickerDecalRequest(previewDecal.transform.position,
+                    previewDecal.transform.rotation, previewDecal.size, stickerID);
             }
         }
-        else
-        {
-            // Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 1000, Color.white, 1.0f);
-            // Debug.Log("Did not Hit");
-        }
+        // Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 1000, Color.white, 1.0f);
+        // Debug.Log("Did not Hit");
     }
 
     private void UpdatePreviewDecalSticker()
@@ -127,7 +122,8 @@ public class DecalController : MonoBehaviour
 
     private void UpdatePreviewDecalTransform()
     {
-        previewDecal.transform.position = mainCamera.transform.position + (0.5f * decalReach + 0.1f) * mainCamera.transform.forward;
+        previewDecal.transform.position =
+            mainCamera.transform.position + (0.5f * decalReach + 0.1f) * mainCamera.transform.forward;
         previewDecal.transform.rotation = mainCamera.transform.rotation * Quaternion.Euler(0, 0, currentRotation);
     }
 

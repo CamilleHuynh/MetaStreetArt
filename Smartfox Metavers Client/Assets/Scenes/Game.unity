@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 5781.842, g: 4021.9043, b: 3888.6875, a: 1}
+  m_IndirectSpecularColor: {r: 5794.7344, g: 4031.0469, b: 3892.0703, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9908,7 +9908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4798748365701764479, guid: 52f03840651fbba4fba62941f9a25b74, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4798748365701764479, guid: 52f03840651fbba4fba62941f9a25b74, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10241,7 +10241,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &537624020 stripped
 Transform:
@@ -23031,9 +23031,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIStickers
       objectReference: {fileID: 0}
+    - target: {fileID: 7978335273760978425, guid: b47d0679821d6b344a6ce2990f02ce4e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978335273760978425, guid: b47d0679821d6b344a6ce2990f02ce4e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978335273760978425, guid: b47d0679821d6b344a6ce2990f02ce4e, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7978335274571864971, guid: b47d0679821d6b344a6ce2990f02ce4e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.918092
+      value: -0.000007782503
       objectReference: {fileID: 0}
     - target: {fileID: 7978335274766114578, guid: b47d0679821d6b344a6ce2990f02ce4e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -30824,7 +30836,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1763085632
 PrefabInstance:
