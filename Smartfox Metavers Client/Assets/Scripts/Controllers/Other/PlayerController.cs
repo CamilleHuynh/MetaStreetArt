@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 lowerLimit;
     private Vector3 higherLimit;
 
-    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] public LayerMask playerLayer;
     [SerializeField] private float interactionDistance = 50.0f;
 
     // Dirty flag for checking if movement was made or not
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        
+
         // UI Pause
         if (Input.GetButtonDown("Pause"))
         {
@@ -51,11 +51,11 @@ public class PlayerController : MonoBehaviour
             Cursor.lockState = canMove ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible = canMove ? false : true;
         }
-        
+
         // We are grounded, so recalculate move direction based on axes
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
-        
+
         // Press Left Shift to run
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
         float curSpeedX = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Vertical") : 0;
@@ -91,7 +91,7 @@ public class PlayerController : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
-        
+
         // Check movement limits
         Vector3 pos = this.transform.position;
 
@@ -104,28 +104,6 @@ public class PlayerController : MonoBehaviour
 	        this.transform.position = new Vector3(pos.x, pos.y, lowerLimit.z);
         if (pos.z > higherLimit.z)
 	        this.transform.position = new Vector3(pos.x, pos.y, higherLimit.z);
-    }
-
-    void FixedUpdate()
-    {
-        // Interaction
-        RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit,
-                    interactionDistance, ~playerLayer))
-            {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance,
-                    Color.yellow);
-                Debug.Log("Did Hit");
-            }
-            else
-            {
-                Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * 1000, Color.white);
-                Debug.Log("Did not Hit");
-            }
-        }
     }
 
     public void SetLimits(float minX, float minZ, float maxX, float maxZ)

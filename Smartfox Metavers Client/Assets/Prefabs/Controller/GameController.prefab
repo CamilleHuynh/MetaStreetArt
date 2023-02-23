@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1278711172044116987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278711172044116985}
+  - component: {fileID: 1278711172044116986}
+  m_Layer: 0
+  m_Name: DecalApplicatorController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278711172044116985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278711172044116987}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1278711172433223827}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1278711172044116986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278711172044116987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe90aa6d076f974c905e55ffe3b0224, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stickersSO: {fileID: 11400000, guid: 9a40de041dd00f14ebb9baf3992be407, type: 2}
+--- !u!1 &1278711172433223828
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1278711172433223827}
+  - component: {fileID: 1278711172433223826}
+  m_Layer: 0
+  m_Name: GameController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1278711172433223827
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278711172433223828}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1278711172044116985}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1278711172433223826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278711172433223828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536b68e5c6a2c494a93a2cb6b0ab7600, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsPanel: {fileID: 0}
+  playerPrefab: {fileID: 8127538224119021884, guid: ffcd6319830b44f4dac637c900eeec46, type: 3}
+  playerModels:
+  - {fileID: 100002, guid: c356d07ea28e14000a234864a77ef1fa, type: 3}
+  - {fileID: 100002, guid: 1c8f4da59af974aa4a2b23e9fe40956f, type: 3}
+  - {fileID: 100002, guid: 7966a48a9482d4c658be467c4bf08da6, type: 3}
+  playerMaterials:
+  - {fileID: 2100000, guid: 8fcf21dffbcc748228fa118b7b5665d0, type: 2}
+  - {fileID: 2100000, guid: e2bb6cb0008c24fe0bddc1620ed57641, type: 2}
+  - {fileID: 2100000, guid: cd293263caff2453bbace47c4d5d788d, type: 2}
+  - {fileID: 2100000, guid: b73cd44f9623344a3a3304feef741ad4, type: 2}
+  terrainCollider: {fileID: 0}
+  aoiPrefab: {fileID: 4941411905183408505, guid: 1ac639ee6d77f4d5cacc26cdd3b61900, type: 3}
+  cubePrefab: {fileID: 7346483324788694524, guid: fd22e9f2b8fe70e4ab19a26722ded936, type: 3}

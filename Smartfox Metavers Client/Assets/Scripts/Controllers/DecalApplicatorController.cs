@@ -32,52 +32,48 @@ public class DecalApplicatorController : MonoBehaviour
         InitializeStickerDecalList();
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("///// REMOVE DEBUG.LOG IN SCRIPT /////");
-
-            if(player == null)
-            {
-                player = FindObjectOfType<PlayerController>();
-            }
-
-            SendStickerDecalRequest(player.transform.position, Quaternion.Euler(90, 0, 0), 0, 1);
-        }
-
-    }
-
     // Decode parameters from IMMOItem and call spawning function
     public void SpawnStickerDecalFromServer(IMMOItem item)
     {
-        int id = item.GetVariable("stickerDecalID").GetIntValue();
+        // int id = item.GetVariable("stickerDecalID").GetIntValue();
 
         Vector3 pos = DecodePositionVector(item);
 
         Vector3 eulerAngles = DecodeRotationVector(item);
         Quaternion rot = Quaternion.Euler(eulerAngles);
 
-        // Vector3 size = DecodeSizeVector(item);
-        Vector3 size = new Vector3(5, 5, 5);
+        Vector3 size = DecodeSizeVector(item);
+        // Vector3 size = new Vector3(5, 5, 5);
+
+        Debug.Log("SpawnStickerDecalFromServer size: " + size);
 
         int stickerID = item.GetVariable("stickerID").GetIntValue();
 
-        SpawnStickerDecal(id, pos, rot, size, stickerID);
+        SpawnStickerDecal(pos, rot, size, stickerID);
     }
 
     public void SpawnStickerDecalFromEvent(SFSObject param)
     {
+        // Debug.Log("SpawnStickerDecalFromEvent");
 
+        // Vector3 pos = new Vector3(param.GetFloat("x"), param.GetFloat("y"), param.GetFloat("z"));
+
+        // Vector3 eulerAngles = new Vector3(param.GetFloat("rotX"), param.GetFloat("rotY"), param.GetFloat("rotZ"));
+        // Quaternion rot = Quaternion.Euler(eulerAngles);
+
+        // Vector3 size = new Vector3(param.GetFloat("sizeX"), param.GetFloat("sizeY"), param.GetFloat("sizeZ"));
+
+        // int stickerID = param.GetInt("stickerID");
+
+        // SpawnStickerDecal(pos, rot, size, stickerID);
     }
 
     /**
      * Send spawn sticker decal request to server
      */
-    private void SendStickerDecalRequest(Vector3 position, Quaternion rotation, int stickerID, int stickerDecalID)
+    public void SendStickerDecalRequest(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
     {
-        Debug.Log("Set params for sticker decal spawn request");
+        Debug.Log("Set params for sticker decal spawn request size: " + size);
 
 	    ISFSObject param = new SFSObject();
 
@@ -89,15 +85,13 @@ public class DecalApplicatorController : MonoBehaviour
 	    param.PutFloat("rotY", rotation.eulerAngles.y);
         param.PutFloat("rotZ", rotation.eulerAngles.z);
 
-        // param.PutFloat("sizeX", decal.size.x);
-        // param.PutFloat("sizeY", decal.size.y);
-        // param.PutFloat("sizeZ", decal.size.z);
+        param.PutFloat("sizeX", size.x);
+        param.PutFloat("sizeY", size.y);
+        param.PutFloat("sizeZ", size.z);
 
         // Add parameters for size when we know how to manage it
 
         // Add param.PutFloat for lifetime/date/something to make them disappear
-
-        param.PutInt("stickerDecalID", stickerDecalID);
 	    param.PutInt("stickerID", stickerID);
 
         gs.SpawnStickerDecalRequest(param);
@@ -107,14 +101,16 @@ public class DecalApplicatorController : MonoBehaviour
 	    // sfs.Send(new ExtensionRequest("spawn_stickerDecal", param, sfs.LastJoinedRoom));
     }
 
-    private void SpawnStickerDecal(int id, Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
+    private void SpawnStickerDecal(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
     {
-        Debug.Log("Spawn sticker decal in world");
+        Debug.Log("Spawn sticker decal in world size: " + size);
 
         DecalProjector decal = Instantiate(stickersSO.decalProjectorPrefab, position, rotation);
-        // decal.size = size;
-        decal.size = new Vector3(5, 5, 5);
+        decal.size = size;
+        // decal.size = new Vector3(5, 5, 5);
         decal.material = stickersSO.stickerList[stickerID].mat;
+
+        decal.enabled = true;
     }
 
     private void InitializeStickerDecalList()
