@@ -19,27 +19,35 @@ public class Stickers : ScriptableObject
     {
         stickerList.Clear();
         var guids = AssetDatabase.FindAssets("t:Texture", new[] { "Assets/Images/Stickers" });
+
+        var i = 0;
         foreach (var guid in guids)
         {
+            // Search images
             var path = AssetDatabase.GUIDToAssetPath(guid);
-            var t = AssetDatabase.LoadAssetAtPath<Texture>(path);
+            var t = AssetDatabase.LoadAssetAtPath<Sprite>(path);
             var item = new Sticker();
             item.Image = t;
             item.name = path.Remove(0, "Assets/Images/Stickers/".Length).Replace('\\', '_').Replace(' ', '_')
                 .Replace('/', '_').Replace(".png", "");
+
+            //Add list
             stickerList.Add(item);
+
+            // Id
+            item.id = i;
+
+            // Material asset
+            var material = new Material(Shader.Find("HDRP/Decal"));
+            AssetDatabase.CreateAsset(material, "Assets/Materials/DecalMat/sticker_mat/" + item.name + ".mat");
+            item.mat = material;
+            item.mat.SetTexture("_BaseColorMap", item.Image.texture);
+            EditorUtility.SetDirty(material);
+
+            i++;
         }
 
         EditorUtility.SetDirty(this);
-
-        foreach (var s in stickerList)
-            if (s.mat == null)
-            {
-                var material = new Material(Shader.Find("HDRP/Decal"));
-                AssetDatabase.CreateAsset(material, "Assets/Materials/DecalMat/sticker_mat/" + s.name + ".mat");
-                s.mat = material;
-                EditorUtility.SetDirty(material);
-            }
     }
 #endif
 
@@ -47,7 +55,7 @@ public class Stickers : ScriptableObject
     public class Sticker
     {
         [HideInInspector] public string name; // For visualize
-        public Texture Image;
+        public Sprite Image;
         public int id;
         public Material mat;
     }
