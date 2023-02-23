@@ -1,25 +1,20 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
 using UnityEngine.UI;
+using UnityEditor.Events;
+using UnityEngine.Events;
+#endif
 
 public class StickerMenu : MonoBehaviour
 {
     [SerializeField] private Transform Panel;
     [SerializeField] private Transform Content;
     [SerializeField] private GameObject PrefabUISticker;
-    [SerializeField] private Stickers soStickers;
-
 
     private void Start()
     {
         Panel.gameObject.SetActive(false);
-        foreach (var sticker in soStickers.stickerList)
-        {
-            var ui = Instantiate(PrefabUISticker, Content.transform).transform.GetChild(0);
-            ui.GetComponent<Image>().overrideSprite =
-                Sprite.Create((Texture2D)sticker.Image, new Rect(0, 0, sticker.Image.width, sticker.Image.height),
-                    new Vector2(0.5f, 0.5f));
-            ui.GetComponent<Button>().onClick.AddListener(() => { SelectSticker(sticker.id); });
-        }
     }
 
     private void Update()
@@ -40,4 +35,25 @@ public class StickerMenu : MonoBehaviour
         ((GameSceneController)GameSceneController.instance).localDecalController.SetStickerID(id);
         SetMenuActive(!Panel.gameObject.activeSelf);
     }
+
+
+#if UNITY_EDITOR
+    [SerializeField] private Stickers soStickers;
+
+    [ContextMenu("Update stickers UI")]
+    public void UpdateUISticker()
+    {
+        foreach (var sticker in soStickers.stickerList)
+        {
+            var ui = Instantiate(PrefabUISticker, Content.transform).transform.GetChild(0);
+            ui.GetComponent<Image>().sprite = sticker.Image;
+
+            var btn = ui.GetComponent<Button>();
+            UnityAction<int> action = SelectSticker;
+            UnityEventTools.AddIntPersistentListener(btn.onClick, action, sticker.id);
+        }
+
+        EditorUtility.SetDirty(this);
+    }
+#endif
 }

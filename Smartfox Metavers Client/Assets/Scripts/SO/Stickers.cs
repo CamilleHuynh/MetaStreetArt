@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.HighDefinition;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -11,32 +9,54 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "StickerDecals", menuName = "ScriptableObjects/Decals/StickerDecalList")]
 public class Stickers : ScriptableObject
 {
-    [Serializable]
-    public class Sticker {
-        public Texture Image;
-        public int id;
-        public Material mat;
-    }
-
     public Material baseMaterial;
     public DecalProjector decalProjectorPrefab;
     public List<Sticker> stickerList;
-    
-    #if UNITY_EDITOR
-    
-    [ContextMenu("Spawn materials")]
-    public void SpawnMaterialsInFolder()
+
+#if UNITY_EDITOR
+    [ContextMenu("Populate images")]
+    public void PopulatesImagesStickers()
     {
-        foreach(Sticker s in stickerList)
+        stickerList.Clear();
+        var guids = AssetDatabase.FindAssets("t:Texture", new[] { "Assets/Images/Stickers" });
+
+        var i = 0;
+        foreach (var guid in guids)
         {
-            if (s.mat == null)
-            {
-                Material material = new Material (Shader.Find("HDRP/Decal"));
-                AssetDatabase.CreateAsset(material, "Assets/Materials/DecalMat/sticker_mat/"+s.Image.name+".mat");
-                s.mat = material;
-                EditorUtility.SetDirty(this);
-            }
+            // Search images
+            var path = AssetDatabase.GUIDToAssetPath(guid);
+            var t = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+            var item = new Sticker();
+            item.Image = t;
+            item.name = path.Remove(0, "Assets/Images/Stickers/".Length).Replace('\\', '_').Replace(' ', '_')
+                .Replace('/', '_').Replace(".png", "");
+
+            //Add list
+            stickerList.Add(item);
+
+            // Id
+            item.id = i;
+
+            // Material asset
+            var material = new Material(Shader.Find("HDRP/Decal"));
+            AssetDatabase.CreateAsset(material, "Assets/Materials/DecalMat/sticker_mat/" + item.name + ".mat");
+            item.mat = material;
+            item.mat.SetTexture("_BaseColorMap", item.Image.texture);
+            EditorUtility.SetDirty(material);
+
+            i++;
         }
+
+        EditorUtility.SetDirty(this);
     }
-    #endif
+#endif
+
+    [Serializable]
+    public class Sticker
+    {
+        [HideInInspector] public string name; // For visualize
+        public Sprite Image;
+        public int id;
+        public Material mat;
+    }
 }
