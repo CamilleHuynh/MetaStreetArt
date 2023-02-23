@@ -123,7 +123,7 @@ public class DecalController : MonoBehaviour
     private void UpdatePreviewDecalTransform()
     {
         previewDecal.transform.position =
-            mainCamera.transform.position + (0.5f * decalReach + 0.1f) * mainCamera.transform.forward;
+            mainCamera.transform.position + (0.5f * decalReach + 2f) * mainCamera.transform.forward;
         previewDecal.transform.rotation = mainCamera.transform.rotation * Quaternion.Euler(0, 0, currentRotation);
     }
 

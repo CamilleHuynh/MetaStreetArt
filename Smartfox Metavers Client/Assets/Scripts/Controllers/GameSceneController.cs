@@ -35,6 +35,9 @@ public class GameSceneController : BaseSceneController
 
     private GameObject localPlayer;
     private PlayerController localPlayerController;
+    private CharacterAppearance characterAppearance;
+
+    [SerializeField] CharacterPersonalization characterSO;
 
     //----------------------------------------------------------
     // Private properties
@@ -52,6 +55,8 @@ public class GameSceneController : BaseSceneController
     {
         decalApplicatorController = FindObjectOfType<DecalApplicatorController>();
 
+        characterAppearance = GetComponent<CharacterAppearance>();
+
         // Set a reference to the SmartFox client instance
         sfs = gm.GetSfsClient();
 
@@ -62,8 +67,8 @@ public class GameSceneController : BaseSceneController
         AddSmartFoxListeners();
 
         // Set random model and material and spawn player model
-        var numModel = Random.Range(0, playerModels.Length);
-        var numMaterial = Random.Range(0, playerMaterials.Length);
+        var numModel = Random.Range(0, characterSO.characterItems.Count);
+        var numMaterial = Random.Range(0, characterSO.characterMaterial.Count);
         SpawnLocalPlayer(numModel, numMaterial);
 
         // Instantiate and set scale and position of game object representing the Area of Interest
@@ -274,7 +279,9 @@ public class GameSceneController : BaseSceneController
         localPlayer = Instantiate(playerPrefab, pos, rot);
 
         // Assign starting material
-        localPlayer.GetComponentInChildren<Renderer>().material = playerMaterials[numMaterial];
+        // localPlayer.GetComponentInChildren<Renderer>().material = playerMaterials[numMaterial];
+
+        characterAppearance.SpawnCharacter(numMaterial, numModel, localPlayer);
 
         // Since this is the local player, lets add a controller and set the camera
         localPlayerController = localPlayer.GetComponent<PlayerController>();
@@ -322,13 +329,18 @@ public class GameSceneController : BaseSceneController
         var numMaterial = user.GetVariable("mat").GetIntValue();
 
         // Spawn remote player model
-        var remotePlayer = Instantiate(playerModels[numModel]);
+        GameObject remotePlayer = Instantiate(playerModels[numModel]);
+
+        remotePlayer = characterAppearance.SpawnWorldCharacter(numMaterial, numModel);
+
         remotePlayer.AddComponent<SimpleRemoteInterpolation>();
         remotePlayer.GetComponent<SimpleRemoteInterpolation>().SetTransform(pos, rot, false);
 
         // Set material and name
-        remotePlayer.GetComponentInChildren<Renderer>().material = playerMaterials[numMaterial];
+        // remotePlayer.GetComponentInChildren<Renderer>().material = playerMaterials[numMaterial];
         remotePlayer.GetComponentInChildren<Text>().text = user.Name;
+
+        // characterAppearance.SpawnCharacter(pos, rot, numModel, numMaterial);
 
         // Add the object to the list of remote players
         remotePlayers.Add(user, remotePlayer);

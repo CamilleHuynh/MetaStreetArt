@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8407121671545734219
+--- !u!1 &4673522472411616584
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 9216555282015493873}
-  - component: {fileID: 5208434580579127636}
-  - component: {fileID: 8047058346019612062}
+  - component: {fileID: 5444991870857252850}
+  - component: {fileID: 8953055817852584023}
+  - component: {fileID: 6618976012590511261}
   m_Layer: 0
   m_Name: Beret
   m_TagString: Untagged
@@ -18,36 +18,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9216555282015493873
+--- !u!4 &5444991870857252850
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8407121671545734219}
-  m_LocalRotation: {x: -0.66006, y: 0.08623349, z: -0.07667991, w: 0.74229693}
-  m_LocalPosition: {x: -0.287, y: 0.388, z: -0.316}
+  m_GameObject: {fileID: 4673522472411616584}
+  m_LocalRotation: {x: -0.69835633, y: 0.11089853, z: -0.11089853, w: 0.69835633}
+  m_LocalPosition: {x: -0.661, y: 0.164, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8526426898118835046}
+  m_Father: {fileID: 7023474598403065307}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -75.171, y: 63.606, z: -62.826}
---- !u!33 &5208434580579127636
+  m_LocalEulerAnglesHint: {x: -71.954, y: 90, z: -90}
+--- !u!33 &8953055817852584023
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8407121671545734219}
+  m_GameObject: {fileID: 4673522472411616584}
   m_Mesh: {fileID: 2534964839176971238, guid: 51bf431c6806c7a4a84b4a53461ba674, type: 3}
---- !u!23 &8047058346019612062
+--- !u!23 &6618976012590511261
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8407121671545734219}
+  m_GameObject: {fileID: 4673522472411616584}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -83,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8526426898118835049
+--- !u!1 &7023474598403065304
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8526426898118835046}
+  - component: {fileID: 7023474598403065307}
   m_Layer: 0
   m_Name: Beret_parent
   m_TagString: Untagged
@@ -99,19 +99,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8526426898118835046
+--- !u!4 &7023474598403065307
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8526426898118835049}
+  m_GameObject: {fileID: 7023474598403065304}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 9216555282015493873}
+  - {fileID: 5444991870857252850}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

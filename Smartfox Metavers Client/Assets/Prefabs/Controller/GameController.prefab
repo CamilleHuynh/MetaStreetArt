@@ -55,6 +55,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1278711172433223827}
   - component: {fileID: 1278711172433223826}
+  - component: {fileID: 8457412171035741500}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -90,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536b68e5c6a2c494a93a2cb6b0ab7600, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_dontDestroyOnLoad: 0
   settingsPanel: {fileID: 0}
   playerPrefab: {fileID: 8127538224119021884, guid: ffcd6319830b44f4dac637c900eeec46, type: 3}
   playerModels:
@@ -104,3 +106,19 @@ MonoBehaviour:
   terrainCollider: {fileID: 0}
   aoiPrefab: {fileID: 4941411905183408505, guid: 1ac639ee6d77f4d5cacc26cdd3b61900, type: 3}
   cubePrefab: {fileID: 7346483324788694524, guid: fd22e9f2b8fe70e4ab19a26722ded936, type: 3}
+  localDecalController: {fileID: 0}
+  characterSO: {fileID: 11400000, guid: c69502a005677eb49801697c84b9ec35, type: 2}
+--- !u!114 &8457412171035741500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1278711172433223828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac14e1fd9357a5b4ea4e426c8e280d95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterSO: {fileID: 11400000, guid: c69502a005677eb49801697c84b9ec35, type: 2}
+  characterPrefab: {fileID: 3915649161400486056, guid: 3459e3499bf59614aa5a70340dbbaf97, type: 3}
