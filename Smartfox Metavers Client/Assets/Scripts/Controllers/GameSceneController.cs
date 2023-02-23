@@ -108,7 +108,7 @@ public class GameSceneController : BaseSceneController
 
         // Cube creation
         // New input system should be integrated but this works for the basic cube creation example
-        if (Input.GetButtonDown("Jump") && localPlayer != null)
+        if (Input.GetButtonDown("Cube") && localPlayer != null)
             SpawnCubeRequest(localPlayer.transform.position, localPlayer.transform.rotation,
                 sfs.MySelf.GetVariable("mat").GetIntValue());
 
