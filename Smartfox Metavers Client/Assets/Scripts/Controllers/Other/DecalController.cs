@@ -106,7 +106,6 @@ public class DecalController : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1") && !((GameSceneController)GameSceneController.instance).IsInMenu)
             {
-                Debug.Log("DecalController : Set decal, size: " + previewDecal.size);
                 decalApplicatorController.SendStickerDecalRequest(previewDecal.transform.position,
                     previewDecal.transform.rotation, previewDecal.size, stickerID);
             }
@@ -117,7 +116,7 @@ public class DecalController : MonoBehaviour
 
     private void UpdatePreviewDecalSticker()
     {
-        previewDecal.material = stickersSO.stickerList[stickerID].mat;
+        previewDecal.material = stickersSO.stickerList[stickerID].previewMat;
     }
 
     private void UpdatePreviewDecalTransform()

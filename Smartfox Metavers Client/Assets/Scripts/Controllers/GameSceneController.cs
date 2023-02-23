@@ -120,7 +120,7 @@ public class GameSceneController : BaseSceneController
         // UI Pause
         if (Input.GetButtonDown("Pause"))
         {
-            Debug.Log("Pause");
+            // Debug.Log("Pause");
             SetMenuActive(!IsInMenu);
         }
     }
@@ -391,7 +391,6 @@ public class GameSceneController : BaseSceneController
 
     public void SpawnStickerDecalRequest(ISFSObject param)
     {
-        Debug.Log("Send sticker decal request");
         sfs.Send(new ExtensionRequest("spawn_stickerDecal", param, sfs.LastJoinedRoom));
     }
 

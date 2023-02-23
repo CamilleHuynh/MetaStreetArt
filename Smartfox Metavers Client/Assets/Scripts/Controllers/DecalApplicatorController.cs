@@ -30,8 +30,6 @@ public class DecalApplicatorController : MonoBehaviour
         var size = DecodeSizeVector(item);
         // Vector3 size = new Vector3(5, 5, 5);
 
-        Debug.Log("SpawnStickerDecalFromServer size: " + size);
-
         var stickerID = item.GetVariable("stickerID").GetIntValue();
 
         SpawnStickerDecal(pos, rot, size, stickerID);
@@ -58,8 +56,6 @@ public class DecalApplicatorController : MonoBehaviour
      */
     public void SendStickerDecalRequest(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
     {
-        Debug.Log("Set params for sticker decal spawn request size: " + size);
-
         ISFSObject param = new SFSObject();
 
         param.PutFloat("x", position.x);
@@ -88,8 +84,6 @@ public class DecalApplicatorController : MonoBehaviour
 
     private void SpawnStickerDecal(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
     {
-        Debug.Log("Spawn sticker decal in world size: " + size);
-
         var decal = Instantiate(stickersSO.decalProjectorPrefab, position, rotation);
         decal.size = size;
         // decal.size = new Vector3(5, 5, 5);
