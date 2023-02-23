@@ -1,7 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "d:\\Logiciels\\SmartFoxServer_2X\\SFS2X\\lib\\sfs2x.jar",
-        "d:\\Logiciels\\SmartFoxServer_2X\\SFS2X\\lib\\sfs2x-core.jar"
-    ]
-}

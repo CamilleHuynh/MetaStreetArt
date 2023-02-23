@@ -33,7 +33,12 @@ public class ServerConnectionData : ScriptableObject
     [SerializeField] private Vector3 m_lowestMapLimits = new Vector3(-100f, -10f, -100f);
     [SerializeField] private Vector3 m_highestMapLimits = new Vector3(100f, 10f, 100f);
 
-    public string Host => m_host;
+    public string Host
+    {
+        get => m_host;
+        set => m_host = value;
+    }
+
     public int TcpPort => m_tcpPort;
     public int HttpPort => m_httpPort;
     public string ZoneName => m_zoneName;

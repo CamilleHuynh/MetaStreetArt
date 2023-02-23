@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,7 @@ public class LoginSceneController : BaseSceneController
 	[SerializeField] private ServerConnectionData m_serverConnectionData;
 	
 	[Header("UI Elements")]
+	[SerializeField] private InputField ipInput;
 	[SerializeField] private InputField nameInput;
 	[SerializeField] private Button loginButton;
 	[SerializeField] private Text errorText;
@@ -34,9 +36,10 @@ public class LoginSceneController : BaseSceneController
 
 	private void Start()
 	{
-		// Focus on username input
-		nameInput.Select();
+		// Focus
+		ipInput.Select();
 		nameInput.ActivateInputField();
+		ipInput.ActivateInputField();
 
 		// Show connection lost message, in case the disconnection occurred in another scene
 		string connLostMsg = gm.ConnectionLostMessage;
@@ -48,15 +51,13 @@ public class LoginSceneController : BaseSceneController
 	// UI event listeners
 	//----------------------------------------------------------
 	#region UI Events
-	
-	/**
-	 * On username input edit end, if the Enter key was pressed, connect to SmartFoxServer.
-	 */
-	public void OnNameInputEndEdit()
+
+	public void OnIpInputEndEdit(String input)
 	{
-		if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-			Connect();
+		if (input != "")
+			m_serverConnectionData.Host = input;
 	}
+
 
 	/**
 	 * On Login button click, connect to SmartFoxServer.
@@ -78,6 +79,7 @@ public class LoginSceneController : BaseSceneController
 	 */
 	private void EnableUI(bool enable)
 	{
+		ipInput.interactable = enable;
 		nameInput.interactable = enable;
 		loginButton.interactable = enable;
 	}
