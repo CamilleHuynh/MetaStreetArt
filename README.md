@@ -1,5 +1,13 @@
 # MetaStreetArt
 
+![](img/screenshot%20(1).png)
+![](img/screenshot%20(2).png)
+![](img/screenshot%20(3).png)
+![](img/screenshot%20(4).png)
+![](img/screenshot%20(5).png)
+![](img/screenshot%20(6).png)
+
+---
 ## Introduction
 
 This project was made for a one-week workshop, including students from CNAM-ENJMIN, EESI Angoulême and EESI Poitiers.
@@ -7,23 +15,54 @@ It uses a template made by ENJMIN students for an online game, using Smartfoxser
 
 See below for more informations on this template.
 
-Setup instructions :
+### Server setup instructions
+
 - Open the src folder with IntelliJ, add from C:\Users\<User>\SmartFoxServer_2X\SFS2X\lib two files, sfs2x.jar and sfs2x-core.jar to IntelliJ libs (File > Project Structure > Module > Dependency), change Project > Language Level to 11
 - Create the .jar following the instructions in the [Jetbrains documentation](https://www.jetbrains.com/help/idea/working-with-artifacts.html#examples)
 Build > Build Artifacts
 See also [smartfoxserver documentation](http://docs2x.smartfoxserver.com/)
-- Add the .jar to C:\Users\<User>\SmartFoxServer_2X\SFS2X\extensions\CubeSpawnerRoomExtension (the name of the last folder must be the same as the Room Extension ID in Server Connection Data)
+- Add the .jar to C:\Users\<User>\SmartFoxServer_2X\SFS2X\extensions\CubeSpawnerRoomExtension (the name of the last folder must be the same as the Room Extension ID in Server Connection Data in Unity)
 - Launch the server sfs2x-service.exe
 - Go on [127.0.0.1:8080](http://127.0.0.1:8080), open administration tools, connect (default sfsadmin mdp:sfsadmin), go on ZoneConfigurator, Create a "MetaStreetArt" Zone (the zone must have the same name as the Zone Name in Server Connection Data)
 - Add cube_spawner to the Public Room Group in the Zone Configurator (same name as zone group in Unity)
 - Remove default from Default Room Group
 - Set the max number of variables to 20 (or more)
 - Augment maximum room's name length to 20 (or more)
+
+### Client setup instructions
+
+ - You must be on the same local network than the server, and have the server launched.
+ - Login with the server ip and the name
+ - If no room, click on start game
+ - Go on the room with the icon on the left
+
+### Controls
+
+ZQSD Move
+Space Jump
+Mouse look
+Left click apply stamp
+Right click select stamp
+A/E Rotate stamp
+F flip stamp
+Scroll wheel change size stamp
+Shift run
+C add cube
+Escape/P display mouse
+
+### Know issues
+
+There is some freeze when connecting to the server.
+The order of decals is not assured when adding stamps on others.
+Some graphics artefacts can appear on some models.
+There is a distance and size limit.
+No resilient test have been done on the server side to know number of maximum players and objects, or others network problems.
+
 _____________________________________________________________________
 
 
 
-# Smartfox Metavers (Template for Unity)
+# Documentation of original Smartfox Metavers (Template for Unity)
 
 ## Introduction
 
