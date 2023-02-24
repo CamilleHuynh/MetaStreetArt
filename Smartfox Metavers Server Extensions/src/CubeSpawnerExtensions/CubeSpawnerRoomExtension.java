@@ -90,6 +90,7 @@ public class CubeSpawnerRoomExtension extends SFSExtension
 
             variables.add(new MMOItemVariable("rot", params.getFloat("rot")));
             variables.add(new MMOItemVariable("mat", params.getInt("mat")));
+
             MMOItem cube = new MMOItem(variables);
 
             // Adding the MMOItem in the map -> this is enough to make a user see the item in his proximity list
@@ -166,6 +167,8 @@ public class CubeSpawnerRoomExtension extends SFSExtension
             variables.add(new MMOItemVariable("sizeX", params.getFloat("sizeX")));
             variables.add(new MMOItemVariable("sizeY", params.getFloat("sizeY")));
             variables.add(new MMOItemVariable("sizeZ", params.getFloat("sizeZ")));
+
+            variables.add(new MMOItemVariable("flip", params.getInt("flip")));
 
             variables.add(new MMOItemVariable("stickerID", params.getInt("stickerID")));
             MMOItem stickerDecal = new MMOItem(variables);
