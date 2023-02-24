@@ -17,12 +17,15 @@ public class DecalController : MonoBehaviour
 
     private float currentRotation;
     private float currentSize;
+    private int flip;
     private DecalApplicatorController decalApplicatorController;
     private Camera mainCamera;
 
     private PlayerController playerController;
 
     private int stickerID;
+
+    private Vector3 initialScale;
 
 
     // Start is called before the first frame update
@@ -39,6 +42,9 @@ public class DecalController : MonoBehaviour
 
         currentRotation = 0f;
         currentSize = 2f;
+        flip = 1;
+
+        initialScale = previewDecal.transform.localScale;
 
         UpdatePreviewDecalSticker();
     }
@@ -47,32 +53,6 @@ public class DecalController : MonoBehaviour
     {
         ManageDecalChange();
         ManageDecalPreview();
-
-        // RaycastHit hit;
-
-        // Ray ray = new Ray(mainCamera.transform.position, mainCamera.transform.forward);
-        // bool hasHit = Physics.Raycast(ray, out hit, decalReach, ~playerLayer);
-
-        // EnablePreviewDecal(hasHit);
-
-        // if (hasHit)
-        // {
-        //     // Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * hit.distance, Color.yellow, 1.0f);
-        //     // Debug.Log("Did Hit");
-
-        //     UpdatePreviewDecalTransform();
-
-        //     if (Input.GetButtonDown("Fire1"))
-        //     {
-        //         Debug.Log("DecalController : Set decal, size: " + previewDecal.size);
-        //         decalApplicatorController.SendStickerDecalRequest(previewDecal.transform.position, previewDecal.transform.rotation, previewDecal.size, stickerID);
-        //     }
-        // }
-        // else
-        // {
-        //     // Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 1000, Color.white, 1.0f);
-        //     // Debug.Log("Did not Hit");
-        // }
     }
 
     public void SetStickerID(int i)
@@ -90,6 +70,12 @@ public class DecalController : MonoBehaviour
 
         var rotationDelta = Input.GetAxis("Rotate");
         currentRotation += rotateDegreeRate * rotationDelta * Time.deltaTime;
+
+        if(Input.GetKeyDown(KeyCode.F))
+        {
+            flip = -flip;
+        }
+        UpdatePreviewDecalFlip();
     }
 
     private void ManageDecalPreview()
@@ -110,10 +96,9 @@ public class DecalController : MonoBehaviour
 
             if (Input.GetButtonDown("Fire1") && !((GameSceneController)GameSceneController.instance).IsInMenu)
             {
-                Debug.Log("DecalController : Set decal, size: " + previewDecal.size);
                 oneshotSource.PlayOneShot(tagSound);
                 decalApplicatorController.SendStickerDecalRequest(previewDecal.transform.position,
-                    previewDecal.transform.rotation, previewDecal.size, stickerID);
+                    previewDecal.transform.rotation, previewDecal.size, flip, stickerID);
             }
         }
         // Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * 1000, Color.white, 1.0f);
@@ -135,6 +120,11 @@ public class DecalController : MonoBehaviour
     private void UpdatePreviewDecalSize()
     {
         previewDecal.size = new Vector3(currentSize, currentSize, 10f);
+    }
+
+    private void UpdatePreviewDecalFlip()
+    {
+        previewDecal.transform.localScale = new Vector3(flip * initialScale.x, initialScale.y, initialScale.z);
     }
 
     private void EnablePreviewDecal(bool val)

@@ -30,9 +30,12 @@ public class DecalApplicatorController : MonoBehaviour
         var size = DecodeSizeVector(item);
         // Vector3 size = new Vector3(5, 5, 5);
 
+        var flip = item.GetVariable("flip").GetIntValue();
+        // var flip = 1;
+
         var stickerID = item.GetVariable("stickerID").GetIntValue();
 
-        SpawnStickerDecal(pos, rot, size, stickerID);
+        SpawnStickerDecal(pos, rot, size, flip, stickerID);
     }
 
     public void SpawnStickerDecalFromEvent(SFSObject param)
@@ -54,7 +57,7 @@ public class DecalApplicatorController : MonoBehaviour
     /**
      * Send spawn sticker decal request to server
      */
-    public void SendStickerDecalRequest(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
+    public void SendStickerDecalRequest(Vector3 position, Quaternion rotation, Vector3 size, int flip, int stickerID)
     {
         ISFSObject param = new SFSObject();
 
@@ -70,6 +73,8 @@ public class DecalApplicatorController : MonoBehaviour
         param.PutFloat("sizeY", size.y);
         param.PutFloat("sizeZ", size.z);
 
+        param.PutInt("flip", flip);
+
         // Add parameters for size when we know how to manage it
 
         // Add param.PutFloat for lifetime/date/something to make them disappear
@@ -82,12 +87,14 @@ public class DecalApplicatorController : MonoBehaviour
         // sfs.Send(new ExtensionRequest("spawn_stickerDecal", param, sfs.LastJoinedRoom));
     }
 
-    private void SpawnStickerDecal(Vector3 position, Quaternion rotation, Vector3 size, int stickerID)
+    private void SpawnStickerDecal(Vector3 position, Quaternion rotation, Vector3 size, int flip, int stickerID)
     {
         var decal = Instantiate(stickersSO.decalProjectorPrefab, position, rotation);
         decal.size = size;
         // decal.size = new Vector3(5, 5, 5);
         decal.material = stickersSO.stickerList[stickerID].mat;
+
+        decal.transform.localScale = new Vector3(flip * decal.transform.localScale.x, decal.transform.localScale.y, decal.transform.localScale.z);
 
         decal.enabled = true;
     }
